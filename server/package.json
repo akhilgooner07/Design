@@ -11,6 +11,6 @@
   "dependencies":{
     "express": "*",
     "body-parser": "*",
-    "mongoose": "*"
+    "cookie-parser": "*"
   }
 }

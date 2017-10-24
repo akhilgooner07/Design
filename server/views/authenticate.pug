@@ -1,0 +1,80 @@
+doctype html
+html
+  head
+    title Food App
+    meta(name='viewport', content='width=device-width, initial-scala=1.0')
+    meta(charset='utf-8')
+    style.
+      html,body{
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      .loginbox{
+        text-align: center;
+        width: 30%;
+        margin: auto;
+        margin-top: 70px;
+        padding: 30px;
+        background-color: #fff;
+      }
+      .auth-input{
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-top: 10px;
+        width: 100%;
+        outline: none;
+        padding: 4px 6px;
+        font-size: 14px;
+      }
+      .auth-btn{
+        margin-top: 10px;
+        width: 100%;
+        outline: none;
+        padding: 8px 12px;
+        vertical-align: middle;
+        color: white;
+        border: 1px solid #67c9cc;
+        background-color: #67c9cc;
+        font-size: 14px;
+        transition: 0.7s;
+        cursor: pointer;
+      }
+      .auth-btn:hover{
+        border: 1px solid #67c900;
+        background-color: #67c900;
+      }
+      .avatar{
+        width: 100px;
+        height: 100px;
+        margin: auto;
+      }
+      @media screen and (max-width: 1000px){
+        .loginbox{
+          width: 45%;
+        }
+      }
+      @media screen and (max-width: 700px){
+        .loginbox{
+          width: 60%;
+        }
+      }
+  body
+    if !login
+      div(class='loginbox')
+        div(style='display: flex;width: 100%; flex-direction: column')
+          img(class='avatar', src='potrait.png')
+          input(type='text', class='auth-input',placeholder='Name')
+          input(type='text', class='auth-input',placeholder='Roll No.')
+          input(type='text', class='auth-input',placeholder='Password')
+          button(class='auth-btn', style='float: left; margin-right: 5px') Sign Up
+          a(href='/login', style='margin-top: 10px; text-decoration: underline; color: #67c9cc') have an account? - log in
+    else
+      div(class='loginbox')
+        div(style='display: flex;width: 100%; flex-direction: column')
+          img(class='avatar', src='potrait.png')
+          input(type='text', class='auth-input',placeholder='Roll No.')
+          input(type='text', class='auth-input',placeholder='Password')
+          button(class='auth-btn', style='float: left; margin-right: 5px') Log In
+          a(href='/signup', style='margin-top: 10px; text-decoration: underline; color: #67c9cc') new to food app - sign up now
+      

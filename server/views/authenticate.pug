@@ -6,7 +6,7 @@ html
     meta(charset='utf-8')
     style.
       html,body{
-        background-color: #f0f0f0;
+        background-color: #67c9cc;
         margin: 0;
       }
       .loginbox{
@@ -16,6 +16,7 @@ html
         margin-top: 70px;
         padding: 30px;
         background-color: #fff;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       }
       .auth-input{
         -webkit-box-sizing: border-box;
@@ -63,18 +64,20 @@ html
     if !login
       div(class='loginbox')
         div(style='display: flex;width: 100%; flex-direction: column')
-          img(class='avatar', src='potrait.png')
-          input(type='text', class='auth-input',placeholder='Name')
-          input(type='text', class='auth-input',placeholder='Roll No.')
-          input(type='text', class='auth-input',placeholder='Password')
-          button(class='auth-btn', style='float: left; margin-right: 5px') Sign Up
+          img(class='avatar', src='img/potrait.png')
+          form(method='POST')
+            input(type='text', class='auth-input',placeholder='Name', name='name')
+            input(type='text', class='auth-input',placeholder='Roll No.', name='rollno')
+            input(type='password', class='auth-input',placeholder='Password', name='password')
+            button(class='auth-btn', style='float: left; margin-right: 5px') Sign Up
           a(href='/login', style='margin-top: 10px; text-decoration: underline; color: #67c9cc') have an account? - log in
     else
       div(class='loginbox')
         div(style='display: flex;width: 100%; flex-direction: column')
-          img(class='avatar', src='potrait.png')
-          input(type='text', class='auth-input',placeholder='Roll No.')
-          input(type='text', class='auth-input',placeholder='Password')
-          button(class='auth-btn', style='float: left; margin-right: 5px') Log In
+          img(class='avatar', src='img/potrait.png')
+          form(method='POST')
+            input(type='text', class='auth-input',placeholder='Roll No.', name='rollno')
+            input(type='password', class='auth-input',placeholder='Password', name='password')
+            button(class='auth-btn', style='float: left; margin-right: 5px') Log In
           a(href='/signup', style='margin-top: 10px; text-decoration: underline; color: #67c9cc') new to food app - sign up now
       

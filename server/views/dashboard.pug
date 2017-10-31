@@ -1,0 +1,30 @@
+html
+    head
+        title Dashboard
+        meta(name='viewport', content='initial-scale=1, maximum-scala=1')
+        meta(name="apple-mobile-web-app-capable", content="yes")
+        meta(name="apple-mobile-web-app-status-bar-style", content="black")
+        link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    body
+        nav(class='navbar navbar-default navbar-fixed-top')
+            div(class='container-fluid')
+                div(class='navbar-header')
+                    button(type='button', style='border: none', class='navbar-toggle', data-toggle='collapse', data-target='#navbar')
+                        span(class='icon-bar')
+                        span(class='icon-bar')
+                        span(class='icon-bar')
+                    a(class='navbar-brand', href='#') Dashboard
+                div(class='collapse navbar-collapse', id='navbar')
+                    ul(class='nav navbar-nav')
+                        li
+                            a(href='../user') Profile
+                        li
+                            a(href='#') Settings
+                        li
+                            a(href='#') Claim Rewards
+                        li
+                            a(href='#') Leaderboard
+                        li
+                            a(href='../logout') Logout

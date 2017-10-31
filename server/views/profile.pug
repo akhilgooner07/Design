@@ -1,0 +1,50 @@
+html
+    head
+        title Profile
+        meta(name='viewport', content='initial-scale=1, maximum-scala=1')
+        meta(name="apple-mobile-web-app-capable", content="yes")
+        meta(name="apple-mobile-web-app-status-bar-style", content="black")
+        link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+        style.
+            #back-btn:hover{
+                box-shadow: none;
+            }
+            #rep-btn{
+                font-size: 2.5em;
+                border: 1px solid #67c9cc;
+                background-color: #67c9cc;
+                color: white;
+                outline: none;
+                min-width: 100px;
+                margin-top: 20px;
+            }
+            #rep-btn:hover{
+                box-shadow: none;
+            }
+            #profile-img{
+                border-radius: 50%;
+                margin: auto;
+                width: 200px;
+                height: 200px;
+                background-color: #f0f0f0;
+                border: 2px solid #67c9cc;
+            }
+    body
+        nav(class='navbar navbar-default navbar-fixed-top')
+            div(class='container-fluid')
+                div(class='navbar-header')
+                    button(type='button', style='border: none; outline: none; background-color: transparent; margin-top: 12px',id='back-btn' class='btn navbar-btn pull-left', onclick='window.location.href="../dashboard"')
+                        i(class='glyphicon glyphicon-chevron-left')
+                    a(class='navbar-brand', style='margin: auto', href='#')= user.name
+        div(class='container-fluid', style='text-align: center; margin: auto;margin-top: 100px;')
+            form(method='post', enctype='multipart/form-data')
+                img(class='img img-responsive img-circle', id='profile-img', src='img/'+user.image)
+                input(type='file',name='image', id='imageUpload', style='display: none', onchange='this.form.submit()')
+                script.
+                    $('#profile-img').click(function(){
+                        $('#imageUpload').trigger('click')
+                    })
+            div(class='container-fluid')
+                button(class='btn btn-default', id='rep-btn')= user.getReputation() 

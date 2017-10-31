@@ -20,7 +20,7 @@ function User(name, password, roll_no){
     this.password = password
     this.id = roll_no
     this.groupid = null
-    this.image = null
+    this.image = 'dp_profile.png'
     function setGroupId(group_id){
         this.groupid = group_id
     }

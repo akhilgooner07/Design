@@ -19,7 +19,7 @@ function User(name, password, roll_no){
     this.name = name
     this.password = password
     this.id = roll_no
-    this.groupid = null
+    this.groupid = '--NULL--'
     this.image = 'dp_profile.png'
     function setGroupId(group_id){
         this.groupid = group_id
@@ -30,7 +30,7 @@ function User(name, password, roll_no){
     this.doClaim = function(){
         this.totalClaims ++
         this.claim.push(new Date(Date.now()))
-        
+
     }
     this.doReport = function(userId){
         userData.forEach(function(user){
@@ -38,7 +38,7 @@ function User(name, password, roll_no){
                 user.totalReports ++
             }
         })
-        
+
     }
     this.getReputation = function(){
         return this.totalClaims - this.totalReports
@@ -56,8 +56,7 @@ function User(name, password, roll_no){
 groupData = []
 
 
-function Group(name, id){
-    this.name = name
+function Group(id){
     this.id = id
     this.users = []
 }
@@ -111,8 +110,8 @@ app.get('/dashboard', function(req,res){
 
 app.get('/user', function(req,res){
     if(req.cookies['foodApp_design']){
-        var rollno = req.cookies['foodApp_design'].split(' ')[0];
-        var password = req.cookies['foodApp_design'].split(' ')[1];
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
         var found = false
         userData.forEach(function(user){
             if(user.id == rollno && user.password == password){
@@ -138,6 +137,45 @@ app.post('/user', multer({dest: './public/img/'}).single('image'), function(req,
         }
     })
 })
+
+app.get('/settings', function(req,res){
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                res.render('settings',{'user':user})
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
+})
+
+app.get('/editgroup', function(req,res){
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                res.render('editgroup',{'user':user,'groups':groupData})
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
+})
+
 
 app.post('/claim', function(req,res){
     var userid = res.cookie('design', 'userID')
@@ -165,7 +203,30 @@ app.get('/grouplist', function(req,res){
     res.end(groupData)
 })
 
-app.post('/joingroup/:grpid', function(req,res){
+/*
+ * Ajax method
+ *
+ * */
+
+app.post('/joingroup', function(req,res){
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                user.groupid = req.body.grpid
+                //redirect to dashboard
+                res.send("done")
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
 
 })
 
@@ -180,6 +241,19 @@ app.get('reputation/:usrid', function(req,res){
             res.send(user.totalClaims - user.totalReports)
         }
     })
+})
+
+/*
+ * Dummy routes for debug and testing
+ *
+ * */
+
+app.get('/form-dummy-group', function(req,res){
+    var group1 = new Group('Dummy 1')
+    var group2 = new Group('Dummy 2')
+    groupData.push(group1)
+    groupData.push(group2)
+    res.send(groupData)
 })
 
 app.listen(9500)

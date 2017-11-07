@@ -1,0 +1,25 @@
+html
+    head
+        title Settings
+        meta(charset='utf-8')
+        meta(name='viewport', content='initial-scale=1, maximum-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        link(rel='stylesheet',href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        style.
+            #back-btn:hover{
+                box-shadow: none;
+            }
+    body
+        nav(class='navbar navbar-default navbar-fixed-top')
+            div(class='container-fluid')
+                div(class='navbar-header')
+                    button(type='button',style='border:none;outline:none;background-color: transparent;margin-top: 12px',id='back-btn',class='btn navbar-btn pull-left', onclick='window.location.href="../dashboard"')
+                        i(class='glyphicon glyphicon-chevron-left')
+                    a(class='navbar-brand',style='margin:auto',href='#') Settings
+        div(class='list-group',style='text-align:center;margin:auto;margin-top: 50px')
+                a(href='../editgroup',class='list-group-item') Edit Group
+                a(href='#',class='list-group-item') Edit Profile
+                a(href='#',class='list-group-item') Change Password

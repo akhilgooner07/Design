@@ -1,0 +1,33 @@
+html
+    head
+        title Settings
+        meta(charset='utf-8')
+        meta(name='viewport', content='initial-scale=1, maximum-scale=1')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        link(rel='stylesheet',href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    body
+        div(class='container-fluid')
+            div(class='jumbotron',style='margin: 10px')
+                p Your current group : #[kbd(style='background-color: white; color: black') #{user.groupid}]
+                p Select Group from the list of available groups or <br/> #[kbd(style='cursor: pointer') make your own group]
+                div(class='list-group')
+                for group in groups
+                    a(class='list-group-item',style='cursor: pointer') #{group.id}
+
+        script.
+            $(function(){
+                $('.list-group-item').click(function(){
+                    var group = !{JSON.stringify(group)}
+                    $.ajax({
+                        url:'../joingroup',
+                        type:'POST',
+                        data:{grpid: group.id},
+                        success: function(data){
+                            window.location.href='../dashboard'
+                        }
+                    })
+                })
+            })

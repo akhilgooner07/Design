@@ -66,7 +66,7 @@ app.get('/login', function(req,res){
     if(req.cookies['foodApp_design']){
         res.redirect('dashboard')
     } else {
-        res.render('authenticate', {'login':true})
+        res.render('authenticate', {'login':true, 'user_exists': false, 'name': ''})
     }
 })
 
@@ -74,7 +74,7 @@ app.get('/signup', function(req,res){
     if(req.cookies['foodApp_design']){
         res.redirect('dashboard')
     } else {
-        res.render('authenticate', {'login':false})
+        res.render('authenticate', {'login':false, 'user_exists': false, 'name': ''})
     }
 })
 
@@ -84,10 +84,14 @@ app.get('/logout', function(req,res){
 })
 
 app.post('/signup', function(req,res){
-    var user = new User(req.body.name, req.body.password, req.body.rollno)
-    userData.push(user)
-    res.cookie('foodApp_design', req.body.rollno+' '+req.body.password, { expires: new Date(Date.now() + 172800000), httpOnly: true })
-    res.send(req.cookies['foodApp_design'])
+    if(!userData.some(user => user.id == req.body.rollno)){
+        var user = new User(req.body.name, req.body.password, req.body.rollno)
+        userData.push(user)
+        res.cookie('foodApp_design', req.body.rollno+' '+req.body.password, { expires: new Date(Date.now() + 172800000), httpOnly: true })
+        res.send(req.cookies['foodApp_design'])
+    }else{
+        res.render('authenticate', {'login':false, 'user_exists': true, 'name': req.body.name})
+    }
 })
 
 app.post('/login', function(req,res){

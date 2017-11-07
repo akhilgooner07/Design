@@ -2,8 +2,13 @@ doctype html
 html
   head
     title Food App
-    meta(name='viewport', content='width=device-width, initial-scala=1.0')
     meta(charset='utf-8')
+    meta(name='viewport', content='initial-scale=1, maximum-scala=1')
+    meta(name="apple-mobile-web-app-capable", content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style", content="black")
+    link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
     style.
       html,body{
         background-color: #67c9cc;
@@ -63,10 +68,12 @@ html
   body
     if !login
       div(class='loginbox')
+        if name!=''
+          div(class='alert alert-danger') User already exists
         div(style='display: flex;width: 100%; flex-direction: column')
           img(class='avatar', src='img/potrait.png')
           form(method='POST')
-            input(type='text', class='auth-input',placeholder='Name', name='name')
+            input(type='text', class='auth-input',placeholder='Name', name='name', value=name)
             input(type='text', class='auth-input',placeholder='Roll No.', name='rollno')
             input(type='password', class='auth-input',placeholder='Password', name='password')
             button(class='auth-btn', style='float: left; margin-right: 5px') Sign Up

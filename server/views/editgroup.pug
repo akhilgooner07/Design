@@ -1,6 +1,6 @@
 html
     head
-        title Settings
+        title Group Settings
         meta(charset='utf-8')
         meta(name='viewport', content='initial-scale=1, maximum-scale=1')
         meta(name='apple-mobile-web-app-capable', content='yes')
@@ -12,7 +12,7 @@ html
         div(class='container-fluid')
             div(class='jumbotron',style='margin: 10px')
                 p Your current group : #[kbd(style='background-color: white; color: black') #{user.groupid}]
-                p Select Group from the list of available groups or <br/> #[kbd(style='cursor: pointer') make your own group]
+                p Select Group from the list of available groups or <br/> #[kbd(style='cursor: pointer',id='mkgrp') make your own group]
                 div(class='list-group')
                 for group in groups
                     a(class='list-group-item',style='cursor: pointer') #{group.id}
@@ -29,5 +29,8 @@ html
                             window.location.href='../dashboard'
                         }
                     })
+                })
+                $('#mkgrp').click(function(){
+                    window.location.href='../formgroup'
                 })
             })

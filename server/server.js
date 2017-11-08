@@ -87,7 +87,7 @@ app.post('/signup', function(req,res){
         var user = new User(req.body.name, req.body.password, req.body.rollno)
         userData.push(user)
         res.cookie('foodApp_design', req.body.rollno+' '+req.body.password, { expires: new Date(Date.now() + 172800000), httpOnly: true })
-        res.send(req.cookies['foodApp_design'])
+        res.redirect('/dashboard')
     }else{
         res.render('authenticate', {'login':false, 'user_exists': true, 'name': req.body.name})
     }
@@ -99,7 +99,7 @@ app.post('/login', function(req,res){
     userData.forEach(function(user){
         if(user.id == rollno && user.password == password){
             res.cookie('foodApp_design', rollno+' '+password, { expires: new Date(Date.now() + 172800000), httpOnly: true });
-            res.render('profile', {'user': user})
+            res.redirect('/dashboard')
         }
     })
 })
@@ -178,13 +178,36 @@ app.get('/editgroup', function(req,res){
 
 
 app.post('/claim', function(req,res){
-    var userid = res.cookie('design', 'userID')
-    userData.forEach(function(user){
-        if(user.id == userid){
-            user.currentClaim = true
-            user.totalClaims ++
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                var predate = -1
+                try{
+                    predate = user.claims[user.claims.length-1].getDate()
+                }catch(err){
+                    console.log('ERROR '+err)
+                }
+                var datenow = new Date()
+                if(predate!=datenow.getDate()){
+                    user.totalClaim++
+                    user.claims.push(datenow)
+                    res.send('Done')
+                }else{
+                    res.send('try-again')
+                }
+            }
+        })
+        if(!found){
+            //redirect to signup
         }
-    })
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
+
 })
 
 app.post('/reportclaim/:usrid', function(req,res){
@@ -217,7 +240,6 @@ app.post('/joingroup', function(req,res){
             if(user.id==rollno && user.password==password){
                 found=true
                 user.groupid = req.body.grpid
-                //redirect to dashboard
                 res.send("done")
             }
         })
@@ -228,6 +250,56 @@ app.post('/joingroup', function(req,res){
         res.send("You are not authorised to visit the page")
     }
 
+})
+
+app.get('/formgroup',function(req,res){
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                res.render('makegroup',{unique:true})
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
+})
+
+app.post('/formgroup',function(req,res){
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                var unique = true
+                groupData.forEach(function(group){
+                    if(group.id==req.body.grpid) unique=false
+                })
+                if(unique){
+                    user.groupid = req.body.grpid
+                    var group = new Group(req.body.grpid)
+                    group.users.push(user)
+                    groupData.push(group)
+                    res.send("done")
+                }else{
+                    res.render('makegroup',{unique:false})
+                }
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
 })
 
 app.post('/exitgroup/:grpid', function(req,res){

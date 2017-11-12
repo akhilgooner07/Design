@@ -3,6 +3,7 @@ html
         title Dashboard
         meta(charset='utf-8')
         meta(name='viewport', content='initial-scale=1, maximum-scale=1')
+        meta(http-equiv='refresh',content='5')
         meta(name="apple-mobile-web-app-capable", content="yes")
         meta(name="apple-mobile-web-app-status-bar-style", content="black")
         link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
@@ -29,6 +30,14 @@ html
                             a(href='#') Leaderboard
                         li
                             a(href='../logout') Logout
+        div(class='list-group',style='text-align:center;margin:auto;margin-top: 50px')
+            each user in group
+                if user.claim
+                    div(href='#',class='jumbotron')
+                        p=user.name
+                        p=user.claim
+                        button(class='btn btn-danger') Report
+
         button(class='btn',style='color: white;background-color: black;box-shadow: 0px 5px 5px #808080;position: fixed; bottom: 20px;right: 20px; width: 60px; height: 60px; border-radius: 30px;font-size: 30px;outline: none',id='claim-btn') &plus;
         script.
             $('#claim-btn').click(function(){

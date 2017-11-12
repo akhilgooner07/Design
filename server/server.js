@@ -24,7 +24,7 @@ function User(name, password, roll_no){
     function setGroupId(group_id){
         this.groupid = group_id
     }
-    this.claims = []
+    this.claim = null
     this.totalClaims = 0
     this.totalReports = 0
     this.doClaim = function(){
@@ -105,7 +105,32 @@ app.post('/login', function(req,res){
 })
 
 app.get('/dashboard', function(req,res){
-    res.render('dashboard')
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var found = false
+        userData.forEach(function(user){
+            if(user.id==rollno && user.password==password){
+                found=true
+                var groupFound = false
+                groupData.forEach(function(group){
+                    if(group.id==user.groupid){
+                        groupFound = true
+                        console.log('Group is '+group)
+                        res.render('dashboard',{group:group.users})
+                    }
+                })
+                if(!groupFound){
+                    res.render('dashboard',{group:{'users':[]}})
+                }
+            }
+        })
+        if(!found){
+            //redirect to signup
+        }
+    }else{
+        res.send("You are not authorised to visit the page")
+    }
 })
 
 app.get('/user', function(req,res){
@@ -187,14 +212,15 @@ app.post('/claim', function(req,res){
                 found=true
                 var predate = -1
                 try{
-                    predate = user.claims[user.claims.length-1].getDate()
+                    predate = user.claim.getDate()
                 }catch(err){
-                    console.log('ERROR '+err)
+                    predicate = -1
                 }
                 var datenow = new Date()
                 if(predate!=datenow.getDate()){
                     user.totalClaim++
-                    user.claims.push(datenow)
+                    user.claim = datenow
+                    console.log("Claim submitted by "+user.name+" at "+user.claim)
                     res.send('Done')
                 }else{
                     res.send('try-again')
@@ -240,6 +266,11 @@ app.post('/joingroup', function(req,res){
             if(user.id==rollno && user.password==password){
                 found=true
                 user.groupid = req.body.grpid
+                groupData.forEach(function(group){
+                    if(user.groupid == group.id){
+                        group.users.push(user)
+                    }
+                })
                 res.send("done")
             }
         })

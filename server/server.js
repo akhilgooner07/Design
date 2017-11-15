@@ -116,8 +116,7 @@ app.get('/dashboard', function(req,res){
                 groupData.forEach(function(group){
                     if(group.id==user.groupid){
                         groupFound = true
-                        console.log('Group is '+group)
-                        res.render('dashboard',{group:group.users})
+                        res.render('dashboard',{group:group.users,currentUser: user})
                     }
                 })
                 if(!groupFound){
@@ -220,7 +219,6 @@ app.post('/claim', function(req,res){
                 if(predate!=datenow.getDate()){
                     user.totalClaim++
                     user.claim = datenow
-                    console.log("Claim submitted by "+user.name+" at "+user.claim)
                     res.send('Done')
                 }else{
                     res.send('try-again')
@@ -237,14 +235,29 @@ app.post('/claim', function(req,res){
 })
 
 app.post('/reportclaim/:usrid', function(req,res){
-    var groupid = res.cookie('design', 'groupID')
-    var userid = req.params.userid
-    userData.forEach(function(user){
-        if(user.id == userid && user.groupid == groupid){
-            user.totalReports ++
-        }
-    })
-    // TODO : set a cookie for 1 day
+    if(req.cookies['foodApp_design']){
+        var rollno = req.cookies['foodApp_design'].split(' ')[0]
+        var password = req.cookies['foodApp_design'].split(' ')[1]
+        var groupid = null
+        userData.forEach(function(user){
+            if(user.id == rollno && user.id == password){
+                groupid = user.groupid
+            }
+        })
+        var userid = req.params.usrid
+        var found = false
+        userData.forEach(function(user){
+            if(user.id == userid && user.groupid == groupid){
+                user.totalReports ++
+                found = true
+            }
+        })
+        console.log(userid+' '+found+' '+groupid)
+        if(found) res.send("done")
+        else res.send("not-done")
+    }else{
+        res.send("you are not authorised to view this page")
+    }
 })
 
 app.get('/grouplist', function(req,res){
